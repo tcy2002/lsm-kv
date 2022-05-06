@@ -24,7 +24,7 @@ struct Buffer {
         offsets = new uint32_t[n + 1]{};
     }
     ~Buffer() {
-        delete []filter;
+        delete filter;
         delete []keys;
         delete []offsets;
     }

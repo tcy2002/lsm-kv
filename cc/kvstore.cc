@@ -1,7 +1,7 @@
 #include "../header/kvstore.h"
 
 KVStore::KVStore(const std::string &dir):
-KVStoreAPI(dir), stamp(1), currentDup(0), dir(dir)
+KVStoreAPI(dir), stamp(0), currentDup(0), dir(dir)
 {
     readFromSSTable();
 }
@@ -20,12 +20,11 @@ KVStore::~KVStore() {
 void KVStore::put(uint64_t key, const std::string &s)
 {
     if (MemTable.getMem() + 12 + s.size() > MAX_MEM) {
-        writeToSSTable(0, stamp);
+        writeToSSTable(0, stamp++);
         if (buffer.getNumOfLevel(0) > 2) compaction();
-        stamp++;
     }
 
-    MemTable.put(key, s);
+    MemTable.put(key, s, true);
 }
 
 /**

@@ -35,8 +35,6 @@ uint64_t SkipList::Insert(uint64_t key, const std::string& value, bool cover)
         if (x->forwards[i]->key == key) {
             uint64_t size = x->forwards[i]->val.size();
             if (cover) {
-//                mem -= x->forwards[i]->val.size();
-//                mem += value.size();
                 x->forwards[i]->val = value;
             }
             return size;
@@ -52,10 +50,6 @@ uint64_t SkipList::Insert(uint64_t key, const std::string& value, bool cover)
     }
 
     return 0;
-//    num++;
-//    mem += (12 + value.size());
-//    if (key > max) max = key;
-//    if (key < min) min = key;
 }
 
 /**

@@ -33,6 +33,9 @@ private:
 
 		// Prepare data for Test Mode
 		for (i = 0; i < max; ++i) {
+            if (i >= 2089) {
+                int a = 1;
+            }
 			switch (i & 3) {
 			case 0:
 				EXPECT(not_found, store.get(i));

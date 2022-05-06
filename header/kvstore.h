@@ -9,6 +9,7 @@
 #include "utils.h"
 #include "kvstore_api.h"
 #include "memTable.h"
+#include "memTableMap.h"
 #include "buffer.h"
 
 #define EMPTY ""
@@ -25,7 +26,7 @@ class KVStore : public KVStoreAPI {
 private:
     std::string dir;
     uint64_t stamp;
-    MemTable MemTable{};
+    MemTableMap MemTable{};
     BufferLevel buffer{};
     uint64_t currentDup;
 

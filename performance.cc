@@ -13,16 +13,13 @@ int main() {
     LARGE_INTEGER begin_time;
     LARGE_INTEGER end_time;
     KVStore store("../data");
-    int size{20000};
+    int size{100000};
     store.reset();
     std::list<std::pair<uint64_t, std::string> > li;
 
     QueryPerformanceCounter(&begin_time);
     for (int i = 0; i < size; i++) store.put(i, std::string(u(e), 'a'));
-    int start = 9000;
-    for (int i = start; i < start + 700; i++) {
-        if (store.get(i).empty()) return i;
-    }
+    for (int i = 0; i < size; i++) store.get(i);
     QueryPerformanceCounter(&end_time);
 
     std::cout << (double)(end_time.QuadPart - begin_time.QuadPart) * 1000.0 / (double)freq_.QuadPart << "ms" << std::endl;

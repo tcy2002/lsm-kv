@@ -1,8 +1,28 @@
 #include "../header/memTable.h"
 
+void MemTable::put(uint64_t key, const std::string &value, bool cover) {
+    uint64_t size = table.Insert(key, value, cover);
+    if (size == 0) {
+        num++;
+        mem += (12 + value.size());
+        if (key > max) max = key;
+        if (key < min) min = key;
+    } else if (cover) {
+        mem += (value.size() - size);
+    }
+}
+
 std::string MemTable::get(uint64_t key) {
     SKNode *res = table.Search(key);
-    return {res->key == key ? res->val : ""};
+    return (res->key == key ? res->val : "");
+}
+
+void MemTable::scan(uint64_t key1, uint64_t key2, SkipList *list) {
+    SKNode *start = table.Search(key1);
+    while (start->key <= key2) {
+        list->Insert(start->key, start->val); //不覆盖
+        start = start->forwards[0];
+    }
 }
 
 Buffer *MemTable::Write(std::string &path, uint64_t stamp, uint64_t dup) const {
@@ -29,8 +49,8 @@ Buffer *MemTable::Write(std::string &path, uint64_t stamp, uint64_t dup) const {
     //键与偏移量
     uint64_t *&keys = bfn->keys;
     uint32_t *&offsets = bfn->offsets;
-    p = head;
     uint32_t offset = BF_SIZE + 36 + num * 12, idx{};
+    p = head;
     while (p->key < MAX_NIL) {
         keys[idx] = p->key;
         offsets[idx++] = offset;
@@ -54,30 +74,7 @@ Buffer *MemTable::Write(std::string &path, uint64_t stamp, uint64_t dup) const {
 }
 
 void MemTable::reset() {
-    num = 0;
-    min = INT64_MAX;
-    max = 0;
-    mem = BF_SIZE + 36;
+    resetData();
     table.Reset();
-}
-
-void MemTable::put(uint64_t key, const std::string &value, bool cover) {
-    uint64_t size = table.Insert(key, value, cover);
-    if (size == 0) {
-        num++;
-        mem += (12 + value.size());
-    } else {
-        mem += (value.size() - size);
-    }
-    if (key > max) max = key;
-    if (key < min) min = key;
-}
-
-void MemTable::scan(uint64_t key1, uint64_t key2, SkipList *list) {
-    SKNode *start = table.Search(key1);
-    while (start->key <= key2) {
-        list->Insert(start->key, start->val); //不覆盖
-        start = start->forwards[0];
-    }
 }
 

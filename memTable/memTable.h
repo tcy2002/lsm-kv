@@ -2,7 +2,7 @@
 
 #include <map>
 #include "container.h"
-#include "skipList.h"
+#include "../skipList/skipList.h"
 
 class MemTable : public container {
 private:

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include "buffer.h"
-#include "skipList.h"
+#include "../buffer/buffer.h"
+#include "../skipList/skipList.h"
 
 class container {
 protected:

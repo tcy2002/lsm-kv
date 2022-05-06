@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "bloomFilter.h"
+#include "../bloomFilter/bloomFilter.h"
 
 #define BF_SIZE 10 * 1024
 typedef unsigned char byte;

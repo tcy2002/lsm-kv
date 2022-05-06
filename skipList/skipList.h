@@ -5,8 +5,8 @@
 #include <vector>
 #include <climits>
 #include <ctime>
-#include "bloomFilter.h"
-#include "buffer.h"
+#include "../bloomFilter/bloomFilter.h"
+#include "../buffer/buffer.h"
 
 #define MAX_LEVEL 15
 #define MAX_NIL INT64_MAX

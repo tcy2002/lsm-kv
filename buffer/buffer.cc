@@ -1,4 +1,4 @@
-#include "../header/buffer.h"
+#include "./buffer.h"
 
 void BufferLevel::addToLinkByStamp(Buffer *p, BufferNode *root, int level) {
     while (root->next && root->next->buf->stamp > p->stamp) root = root->next;

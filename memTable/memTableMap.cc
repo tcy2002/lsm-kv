@@ -1,7 +1,7 @@
 /*
  * 用于跳表和STL map的对比测试
  */
-#include "../header/memTableMap.h"
+#include "./memTableMap.h"
 
 void MemTableMap::put(uint64_t key, const std::string &value, bool cover) {
     if (table.emplace(key, value).second) {

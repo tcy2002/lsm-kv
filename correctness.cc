@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <string>
 
-#include "header/test.h"
+#include "./utils/test.h"
 
 class CorrectnessTest : public Test {
 private:

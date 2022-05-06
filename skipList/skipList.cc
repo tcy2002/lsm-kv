@@ -1,6 +1,6 @@
 #include <vector>
 #include <fstream>
-#include "../header/skipList.h"
+#include "./skipList.h"
 
 double SkipList::my_rand()
 {

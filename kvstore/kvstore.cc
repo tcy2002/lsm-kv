@@ -1,4 +1,4 @@
-#include "../header/kvstore.h"
+#include "./kvstore.h"
 
 KVStore::KVStore(const std::string &dir):
 KVStoreAPI(dir), stamp(0), currentDup(0), dir(dir)

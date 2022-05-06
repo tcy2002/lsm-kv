@@ -1,4 +1,4 @@
-#include "../header/memTable.h"
+#include "./memTable.h"
 
 void MemTable::put(uint64_t key, const std::string &value, bool cover) {
     uint64_t size = table.Insert(key, value, cover);

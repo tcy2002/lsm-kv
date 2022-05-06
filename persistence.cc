@@ -3,7 +3,7 @@
 #include <string>
 #include <cassert>
 
-#include "header/test.h"
+#include "./utils/test.h"
 
 class PersistenceTest : public Test {
 private:

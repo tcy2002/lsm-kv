@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <string>
 
-#include "kvstore.h"
+#include "../kvstore/kvstore.h"
 
 class Test {
 protected:

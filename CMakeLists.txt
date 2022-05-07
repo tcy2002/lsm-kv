@@ -6,9 +6,9 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(lsm_kv
-        performance.cc
-        kvstore/kvstore_api.h
-        kvstore/kvstore.h
+        correctness.cc
+        kvstore_api.h
+        kvstore.h
         kvstore/kvstore.cc
         kvstore/sstable.cc
         kvstore/compaction.cc
@@ -24,4 +24,4 @@ add_executable(lsm_kv
         bloomFilter/bloomFilter.h
         bloomFilter/MurmurHash3.h
         utils/utils.h
-        utils/test.h)
+        test.h)

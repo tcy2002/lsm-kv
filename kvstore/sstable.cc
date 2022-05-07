@@ -1,4 +1,4 @@
-#include "./kvstore.h"
+#include "../kvstore.h"
 
 /**
  * 将MemTable中的内容写入SSTable

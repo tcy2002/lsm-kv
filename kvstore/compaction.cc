@@ -1,4 +1,4 @@
-#include "./kvstore.h"
+#include "../kvstore.h"
 
 //删除SSTable与buffer的宏定义
 #define Remove(p, l) \

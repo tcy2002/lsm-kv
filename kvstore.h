@@ -6,11 +6,11 @@
 #include <io.h>
 #include <cmath>
 #include <map>
-#include "../utils/utils.h"
+#include "./utils/utils.h"
 #include "kvstore_api.h"
-#include "../memTable/memTable.h"
-#include "../memTable/memTableMap.h"
-#include "../buffer/buffer.h"
+#include "./memTable/memTable.h"
+#include "./memTable/memTableMap.h"
+#include "./buffer/buffer.h"
 
 #define EMPTY ""
 #define DELETED "~DELETED~"
@@ -26,7 +26,7 @@ class KVStore : public KVStoreAPI {
 private:
     std::string dir;
     uint64_t stamp;
-    MemTableMap MemTable{};
+    MemTable MemTable{};
     BufferLevel buffer{};
     uint64_t currentDup;
 

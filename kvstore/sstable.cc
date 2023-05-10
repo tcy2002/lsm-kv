@@ -103,24 +103,30 @@ std::string KVStore::searchSSTable(uint64_t key) {
             }
         }
 
+        std::ifstream ifs;
+        uint64_t num, cKey, min, max;
+        uint32_t offset1, offset2, len;
+
         for (auto &path : files) {
-            std::ifstream ifs(path,std::ios::binary);
+            ifs.open(path,std::ios::binary);
 
-            uint64_t num, cKey;
-            uint32_t offset1, offset2;
-            long long pos{BF_SIZE + 20};
-            uint32_t len;
-            ifs.seekg(8);
+            ifs.ignore(8);
             ifs.read((char *)&num, 8);
+            ifs.read((char *)&min, 8);
+            ifs.read((char *)&max, 8);
 
+            if (key < min || key > max) {
+                ifs.close();
+                continue;
+            }
+
+            ifs.seekg(BF_SIZE + 32);
             for (int i = 0; i < num; i++) {
-                pos += 12;
-                ifs.seekg(pos);
                 ifs.read((char *)&cKey, 8);
+                ifs.read((char *)&offset1, 4);
                 if (cKey != key) continue;
 
-                ifs.read((char *)&offset1, 4);
-                ifs.seekg(pos + (i == num - 1 ? 12 : 20));
+                if (i < num - 1) ifs.ignore( 8);
                 ifs.read((char *)&offset2, 4);
                 len = offset2 - offset1;
                 val = new char[len + 1]{};
@@ -131,7 +137,6 @@ std::string KVStore::searchSSTable(uint64_t key) {
                 ifs.close();
                 return val;
             }
-
             ifs.close();
         }
     }

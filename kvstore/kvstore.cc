@@ -105,7 +105,7 @@ void KVStore::scan(uint64_t key1, uint64_t key2, std::list<std::pair<uint64_t, s
     MemTable.scan(key1, key2, &tmpList);
 
     //从SSTable中读取数据，found为包含该键值范围的所有buffer的链表
-    BufferNode *found = buffer.findByScopeAndSortByStamp(key1, key2), *buf{found->next};
+    BufferNode *found{buffer.findByScopeAndSortByStamp(key1, key2)}, *buf{found->next};
     int cPos, cSize;
 
     while (buf != nullptr) {
@@ -155,8 +155,8 @@ std::string KVStore::searchBuffer(uint64_t key) {
     int res{-1};
 
     while (buf != nullptr) {
-        //首先在bloomFilter中查找，如果没有直接跳过
-        if (!buf->buf->filter->found(key)) {
+        //如果所查询的键不在当前SSTable的键值范围内，或者查询bloom filter报告不存在，直接跳过。
+        if (key < buf->buf->min || key > buf->buf->max || !buf->buf->filter->found(key)) {
             buf = buf->next;
             continue;
         }
@@ -167,9 +167,10 @@ std::string KVStore::searchBuffer(uint64_t key) {
         uint64_t sKey;
         while (high - low > 1) {
             sKey = keys[mid];
-            if (key > sKey) { low = mid; mid = (mid + high) / 2; }
-            else if (key < sKey) { high = mid; mid = (mid + low) / 2; }
+            if (key > sKey) low = mid;
+            else if (key < sKey) high = mid;
             else break;
+            mid = (mid + high) / 2;
         }
 
         if (key == keys[mid]) res = (int)mid;

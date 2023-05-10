@@ -1,11 +1,12 @@
 #include <iostream>
 #include <windows.h>
 #include <random>
-#include <ctime>
 #include "kvstore.h"
 
-void performanceTest(int size, int dup) {
-    std::default_random_engine e(time(nullptr));
+void performanceTest(int size, int dup, int valSize) {
+    std::default_random_engine ee(1);
+    std::uniform_int_distribution<int> uu(0, size);
+    std::default_random_engine e(0);
     std::uniform_int_distribution<int> u(100, 1000);
 
     LARGE_INTEGER freq_;
@@ -19,7 +20,7 @@ void performanceTest(int size, int dup) {
     for (int i = 0; i < dup; i++) {
         store.reset();
         QueryPerformanceCounter(&begin_time);
-        for (int j = 0; j < size; j++) store.put(j, std::string(u(e), 'a'));
+        for (int j = 0; j < size; j++) store.put(uu(ee), std::string(u(e), 'a'));
         QueryPerformanceCounter(&end_time);
         latency1 += (double)(end_time.QuadPart - begin_time.QuadPart) * 1000000.0 / (double)freq_.QuadPart;
         throughput1 += size / ((double)(end_time.QuadPart - begin_time.QuadPart) / (double)freq_.QuadPart);
@@ -32,7 +33,7 @@ void performanceTest(int size, int dup) {
     }
 
     store.reset();
-    for (int j = 0; j < size; j++) store.put(j, std::string(u(e), 'a'));
+    for (int j = 0; j < size; j++) store.put(uu(ee), std::string(u(e), 'a'));
     for (int i = 0; i < dup; i++) {
         QueryPerformanceCounter(&begin_time);
         for (int j = 0; j < size; j++) store.get(j);
@@ -53,11 +54,12 @@ void performanceTest(int size, int dup) {
 }
 
 int main() {
-    int dup{10};
-    performanceTest(100, dup);
-    performanceTest(1000, dup);
-    performanceTest(5000, dup);
-    performanceTest(10000, dup);
-    performanceTest(20000, dup);
+    int dup{1};
+//    for (int i = 3; i <= 60; i+=3) {
+//        performanceTest(i * 1000, dup, 10000);
+//    }
+    int test[] = {1000, 5000, 10000, 20000, 50000, 100000, 200000, 500000};
+    for (auto &it : test) { performanceTest(it, dup, -1); }
+
     return 0;
 }

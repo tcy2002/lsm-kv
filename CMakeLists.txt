@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(lsm_kv
-        persistence.cc
+        performance.cc
         kvstore_api.h
         kvstore.h
         kvstore/kvstore.cc
